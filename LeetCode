@@ -201,8 +201,162 @@ class Solution {
     }
 }
 
+Problem 912 
+import java.util.Vector;
+class Solution {
+    public void merge(int[] nums, int st, int mid, int end){
+        Vector<Integer> temp = new Vector<>();
+        int i = st;
+        int j = mid+1 ;
+        while(i<=mid && j<=end){
+            if(nums[i]<=nums[j]){
+                temp.add(nums[i]);
+                i++;
+            }
+            else {
+                temp.add(nums[j]);
+                j++;
+            }
+        }
+        while(i<=mid){
+            temp.add(nums[i]);
+                i++;
+        }
+        while(j<=end){
+            temp.add(nums[j]);
+                j++;
+        }
+        for(int idx = 0; idx< temp.size(); idx++){
+            nums[idx+st] = temp.get(idx);
+        }
+    }
+    public void merge_sort(int[]nums, int st, int end){
+        if(st>=end){
+            return ;
+        }
+        int mid = st+((end-st)/2);
+        // left half
+        merge_sort(nums, st, mid);
+        // right half
+        merge_sort(nums, mid+1, end);
+        // merge in sorted format
+        merge(nums, st, mid, end);
+    }
+    public int[] sortArray(int[] nums) {
+        merge_sort(nums, 0, nums.length-1);
+        return nums;
+    }
+}
 
+Problem 75 :
+import java.util.Vector;
+class Solution {
+    public void merge(int[] nums, int st, int mid, int end){
+        Vector<Integer> temp = new Vector<>();
+        int i = st;
+        int j = mid+1 ;
+        while(i<=mid && j<=end){
+            if(nums[i]<=nums[j]){
+                temp.add(nums[i]);
+                i++;
+            }
+            else {
+                temp.add(nums[j]);
+                j++;
+            }
+        }
+        while(i<=mid){
+            temp.add(nums[i]);
+                i++;
+        }
+        while(j<=end){
+            temp.add(nums[j]);
+                j++;
+        }
+        for(int idx = 0; idx< temp.size(); idx++){
+            nums[idx+st] = temp.get(idx);
+        }
+    }
+    public void merge_sort(int[]nums, int st, int end){
+        if(st>=end){
+            return ;
+        }
+        int mid = st+((end-st)/2);
+        // left half
+        merge_sort(nums, st, mid);
+        // right half
+        merge_sort(nums, mid+1, end);
+        // merge in sorted format
+        merge(nums, st, mid, end);
+    }
+    public void sortColors(int[] nums) {
+        merge_sort(nums, 0, nums.length-1);
+    }
+}
 
+Problem 88 :
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        int [] temp = new int[m+n];
+        while(i<m && j<n){
+            if(nums1[i] <= nums2[j]){
+                temp[k] = nums1[i];
+                i++;
+                k++;
+            }
+            else{
+                temp[k] = nums2[j];
+                j++;
+                k++;
+            }
+        }
+        while(i<m){
+            temp[k] = nums1[i];
+            i++;
+            k++;
+        }
+        while(j<n){
+            temp[k] = nums2[j];
+            j++;
+            k++;
+        }
+        for (int idx = 0; idx < m + n; idx++) {
+            nums1[idx] = temp[idx];
+        }
+    }
+}
+
+Problem 2418 :
+class Solution {
+    public void swap(String[] names, int i, int j){
+        String temp = names[i];
+        names[i] = names[j];
+        names[j] = temp ;
+    }
+    public void swap(int[] heights, int i, int j){
+        int temp = heights[i];
+        heights[i] = heights[j];
+        heights[j] = temp ;
+    }
+    public String[] sortPeople(String[] names, int[] heights) {
+        for(int k =0; k<heights.length; k++){
+            int max = Integer.MIN_VALUE;
+            int max_idx = 0;
+            for(int i=k; i<heights.length; i++){
+            if(heights[i]>max){
+                max = heights[i];
+                max_idx = i;
+                swap(names, k, max_idx);
+                swap(heights, k, max_idx);
+            }   
+        }
+        }
+        return names ;
+    }
+}
 
 
 
