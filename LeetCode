@@ -359,24 +359,228 @@ class Solution {
 }
 Problem 198 :
 
+
 Problem 17 :
+class Solution {
+    public void answer(String digits, List<String> list, String current,
+    int index, String[] mapping){
+        if(index==digits.length()){
+            list.add(current);
+            return ;
+        }
+        int digit = digits.charAt(index)-'0';
+        String letters = mapping[digit];
+        for(int i=0; i<letters.length(); i++){
+            current += letters.charAt(i);
+            answer(digits, list, current, index+1, mapping);
+            current = current.substring(0,current.length()-1);
+        }
+    }
+    public List<String> letterCombinations(String digits) {
+        List<String> list = new ArrayList<>();
+        if(digits.length()==0){
+            return list ;
+        }
+        String [] mapping = {
+            "",
+            "",
+            "abc",
+            "def",
+            "ghi",
+            "jkl",
+            "mno",
+            "pqrs",
+            "tuv",
+            "wxyz"
+        };
+        answer(digits, list, "", 0, mapping);
+        return list ;
+    }
+}
 
 Problem 39 :
+class Solution {
+    public List<List<Integer>> Sum(int[] candidates, int target, int sum , List<List<Integer>> list, List<Integer>li, int i) {
+        if(i==candidates.length){
+            if(sum == target){
+                list.add(new ArrayList<>(li));
+            }
+            return list;
+        }
+        if(sum > target){
+            return list;
+        }
+        li.add(candidates[i]);
+        sum += candidates[i];
+        Sum(candidates,target, sum, list, li, i);
+        li.remove(li.size()-1);
+        sum -= candidates[i];
+        Sum(candidates,target, sum, list, li, i+1);
+        return list ;
+    }
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> list = new ArrayList<>();
+        return Sum(candidates, target, 0, list, new ArrayList<>(),0);
 
+    }
+}
 Problem 46 :
+class Solution {
+    public List<List<Integer>> answer(int[] nums, List<List<Integer>> list, List<Integer> li, boolean[]used) {
+        if(li.size()== nums.length){
+            list.add(new ArrayList<>(li));
+            return list;
+        }
+        for(int i=0; i<nums.length; i++){
+            if(used[i]){
+                continue ;
+            }
+            li.add(nums[i]);
+            used[i] = true ;
+            answer(nums, list, li, used);
+            li.remove(li.size()-1);
+            used[i] = false ;
+        }
+        return list ;
+    }
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        boolean [] used = new boolean[nums.length];
+        return answer(nums, list, new ArrayList<>(), used);
+    }
+}
 
 Problem 401 :
 
 Problem 77 :
+class Solution {
+    public void combination(int n, int k, int start,List<List<Integer>> list, List<Integer> li) {
+        if(li.size() == k){
+            list.add(new ArrayList<>(li));
+            return ;
+        }
+        for(int i=start; i<=n; i++){
+            li.add(i);
+            combination(n, k, i+1,list, li);
+            li.remove(li.size()-1);
+        }
+    }
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> list = new ArrayList<>();
+        combination(n,k,1,list, new ArrayList<>());
+        return list ;
+    }
+}
 
 Problem 213 :
 
 Middle of linked list 
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode temp = head ;
+        ListNode slow = temp ;
+        ListNode fast = temp ;
+        while(fast!=null && fast.next != null){
+            slow = slow.next ;
+            fast = fast.next.next ;
+        }
+        return slow ;
+    }
+}
 
 Search in linked list
 
-Reverse of a linked list
+Reverse of a linked list :
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode curr = head ;
+        ListNode prev = null ;
+        while(curr != null){
+            ListNode nextnode = curr.next ;
+            curr.next = prev ;
+            prev = curr ;
+            curr = nextnode ;
+        }
+        return prev ;
+    }
+}
 
-Problem 142 
+Problem 24 :
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head ;
+        ListNode prev = dummy ;
+        while(prev.next != null && prev.next.next != null){
+            ListNode first = prev.next ;
+            ListNode second = first.next ;
+            first.next = second.next ;
+            second.next = first ;
+            prev.next = second ;
+            prev = first ;
+        }
+        return dummy.next ;
+    }
+}
 
-Problem 143
+Problem 142 :
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow = head ;
+        ListNode fast = head ;
+        while(fast!= null && fast.next != null){
+            slow = slow.next ;
+            fast = fast.next.next ;
+            if(slow == fast){
+                fast = head ;
+                while(slow!=fast){
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+                return slow ; 
+            }
+            
+        }
+        return null;
+    }
+}
+
+Problem 143 :
+class Solution { 
+    public void reorderList(ListNode head) { 
+        if(head == null || head.next == null) return;
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode second = slow.next;
+        slow.next = null;
+
+        ListNode prev = null;
+        while(second != null){
+            ListNode next = second.next;
+            second.next = prev;
+            prev = second;
+            second = next;
+        }
+
+        second = prev;
+        ListNode first = head;
+
+        while(second != null){
+            ListNode temp1 = first.next;
+            ListNode temp2 = second.next;
+
+            first.next = second;
+            second.next = temp1;
+
+            first = temp1;
+            second = temp2;
+        }
+    } 
+}
